@@ -1,5 +1,6 @@
 <template>
   <div class="the-layout">
+    <vwi-warning />
     <main class="main-container">
       <nuxt :nuxt-child-key="$route.fullPath" />
     </main>

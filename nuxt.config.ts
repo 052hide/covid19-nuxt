@@ -30,7 +30,9 @@ const config: Configuration = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    '~/plugins/vueWtfIe11'
+  ],
   /*
    ** Nuxt.js dev-modules
    */
