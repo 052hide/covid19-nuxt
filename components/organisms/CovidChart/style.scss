@@ -1,0 +1,9 @@
+.summary-chart {
+  --chart-width: 100%;
+  @apply min-w-full overflow-auto;
+  height: calc(100vh - 12rem);
+  width: var(--chart-width);
+  @screen md {
+    max-height: 600px;
+  }
+}

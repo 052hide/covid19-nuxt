@@ -1,42 +1,55 @@
 <template>
-  <div class="page-top"></div>
+  <div v-if="isLoading" class="loading">
+    <p><img src="~/assets/imgs/loading.svg" /></p>
+  </div>
+  <div v-else class="page-top">
+    <section class="top">
+      <h1 class="top__title">Today's Summary</h1>
+      <p v-if="date" class="top__date">
+        {{ date }}
+      </p>
+    </section>
+    <section v-if="summary" class="main">
+      <covid-chart-summary
+        :summary="summary"
+        :show-count="showCount"
+        class="main__chart"
+      />
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import {
-  Countries,
-  DayOne,
-  DayOneTotal,
-  ByCountry,
-  ByCountryTotal,
-  Stats,
-  Summary
-} from '~/api'
+import { Summary } from 'types/summary'
+import { getNow } from '~/utils'
+import { SummaryStore } from '~/store'
+import { CovidChartSummary } from '~/components/organisms/CovidChart'
 
-@Component
+@Component({
+  middleware: ['fetchCountries', 'fetchSummary'],
+  components: {
+    CovidChartSummary
+  }
+})
 export default class index extends Vue {
-  async mounted() {
-    const countries = await Countries.getCountries()
-    const dayOne = await DayOne.getDayOne('us', 'confirmed')
-    const dayOneTotal = await DayOneTotal.getDayOneTotal('us', 'confirmed')
-    const byCountry = await ByCountry.getByCountry('us', 'confirmed')
-    const byCountryTotal = await ByCountryTotal.getByCountryTotal(
-      'us',
-      'confirmed'
-    )
-    const stats = await Stats.getStats()
-    const summary = await Summary.getSummary()
+  readonly showCount = 50
+  isLoading: boolean = true
 
-    console.log({
-      countries,
-      dayOne,
-      dayOneTotal,
-      byCountry,
-      byCountryTotal,
-      stats,
-      summary
-    })
+  get date(): string {
+    return getNow()
+  }
+
+  get summary(): Summary | null {
+    return SummaryStore.getSummary
+  }
+
+  mounted() {
+    this.init()
+  }
+
+  init() {
+    this.isLoading = false
   }
 }
 </script>
