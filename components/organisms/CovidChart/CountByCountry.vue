@@ -1,5 +1,5 @@
 <template>
-  <div class="daily-chart">
+  <div class="covid-chart-count-by-country">
     <chart-line
       :chart-data="chartData"
       :options="chartOption"
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 import { ChartData, ChartOptions, ChartDataSets } from 'chart.js'
 import { CountDay } from '~/types/countDayOneByCountry'
 import dayjs from '~/plugins/dayjs'
@@ -25,15 +25,12 @@ import { ChartLine } from '~/components/molecules/Chart'
 export default class index extends Vue {
   @Prop() countrySlug!: string
   @Prop({ default: 60 }) showDays!: number
-
-  get countDays(): CountDay[] {
-    if (
-      !CountDayOneByCountryStore.getCountDayOneByCountries[this.countrySlug]
-    ) {
-      CountDayOneByCountryStore.fetchCountDayOneByCountry(this.countrySlug)
-    }
-    return CountDayOneByCountryStore.getCountDayOneByCountries[this.countrySlug]
+  @Watch('countrySlug')
+  async watchCountDays() {
+    this.getCountDays()
   }
+
+  countDays: CountDay[] = []
 
   get chartData(): ChartData {
     const countDays = getThinnedArray(this.countDays, 5, true, true)
@@ -82,6 +79,19 @@ export default class index extends Vue {
       labels,
       datasets: [recovered, deaths, confirmed]
     }
+  }
+
+  async mounted() {
+    await this.getCountDays()
+  }
+
+  async getCountDays(): Promise<void> {
+    if (
+      !CountDayOneByCountryStore.getCountDayOneByCountries[this.countrySlug]
+    ) {
+      await CountDayOneByCountryStore.fetchCountDayOneByCountry(this.countrySlug)
+    }
+    this.countDays = CountDayOneByCountryStore.getCountDayOneByCountries[this.countrySlug]
   }
 
   chartOption: ChartOptions = {
