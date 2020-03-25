@@ -1,0 +1,58 @@
+.atom-select {
+  @apply relative box-border rounded-sm border-2 border-solid;
+
+  &__label {
+    @apply relative py-2 px-0 w-full h-8;
+    // height: rem;
+  }
+
+  &__select {
+    @apply absolute py-2 px-4 top-0 left-0 w-full bg-transparent border-none opacity-0;
+    appearance: none;
+  }
+
+  &.primary {
+    @apply bg-white border-primary-border;
+    @media (prefers-color-scheme: dark) {
+      @apply bg-black;
+    }
+  }
+  &.secondary {
+    @apply bg-white border-secondary-border;
+    @media (prefers-color-scheme: dark) {
+      @apply bg-black;
+    }
+  }
+  &.is-disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+  &.is-align-right {
+    @apply text-right;
+  }
+  &.size {
+    &--sm { @apply w-16; }
+    &--md { @apply w-32; }
+    &--lg { @apply w-48; }
+    &--full { @apply w-full; }
+  }
+  &.rounded {
+    &--sm { @apply rounded-sm; }
+    &--md { @apply rounded-md; }
+    &--full { @apply rounded-full; }
+  }
+}
+
+.label {
+  &--selected {
+    @apply absolute m-0;
+    left: 1rem;
+    .is-align-right & {
+      left: auto;
+      right: 2rem;
+    }
+  }
+  &--icon {
+    @apply absolute m-0;
+    right: 0.5rem;
+  }
+}
