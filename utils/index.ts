@@ -1,6 +1,11 @@
 import dayjs from '~/plugins/dayjs'
+import { CountyOption } from '~/types/country'
 
-export const getNow = (format: string = 'YYYY MMM DD') => {
+export const getNowUnixtime = (): number => {
+  return dayjs().unix()
+}
+
+export const getNow = (format: string = 'YYYY MMM DD'): string => {
   return dayjs().format(format)
 }
 
@@ -23,5 +28,19 @@ export const getThinnedArray = <T>(
       }
     }
   }
+  return res
+}
+
+export const getCountryLabel = (
+  countries: CountyOption[],
+  slug: string
+): string => {
+  let res = slug
+  countries.some((country) => {
+    if (slug === country.value) {
+      res = country.label
+      return true
+    }
+  })
   return res
 }

@@ -27,7 +27,7 @@ export default class index extends Vue {
   @Prop({ default: 60 }) showDays!: number
   @Watch('countrySlug')
   async watchCountDays() {
-    this.getCountDays()
+    await this.getCountDays()
   }
 
   countDays: CountDay[] = []
@@ -89,9 +89,12 @@ export default class index extends Vue {
     if (
       !CountDayOneByCountryStore.getCountDayOneByCountries[this.countrySlug]
     ) {
-      await CountDayOneByCountryStore.fetchCountDayOneByCountry(this.countrySlug)
+      await CountDayOneByCountryStore.fetchCountDayOneByCountry([
+        this.countrySlug
+      ])
     }
-    this.countDays = CountDayOneByCountryStore.getCountDayOneByCountries[this.countrySlug]
+    this.countDays =
+      CountDayOneByCountryStore.getCountDayOneByCountries[this.countrySlug]
   }
 
   chartOption: ChartOptions = {

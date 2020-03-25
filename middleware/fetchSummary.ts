@@ -1,7 +1,11 @@
+import { getNowUnixtime } from '~/utils'
 import { SummaryStore } from '~/store'
 
 const fetchSummary = async () => {
-  await SummaryStore.fetchSummary()
+  const durationSec = 600 // 10 min
+  if (SummaryStore.getLastFetchDate < getNowUnixtime() - durationSec) {
+    await SummaryStore.fetchSummary()
+  }
 }
 
 export default fetchSummary

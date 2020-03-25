@@ -51,7 +51,7 @@ export default class index extends Vue {
       this.country = 'china'
     }
 
-    await CountDayOneByCountryStore.fetchCountDayOneByCountry(this.country)
+    await CountDayOneByCountryStore.fetchCountDayOneByCountry([this.country])
     this.isLoading = false
   }
 

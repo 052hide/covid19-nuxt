@@ -1,4 +1,6 @@
-.summary-chart {
+.covid-chart-summary,
+.covid-chart-count-by-country,
+.covid-chart-count-by-countries {
   --chart-width: 100%;
   @apply min-w-full overflow-auto;
   height: calc(100vh - 12rem);
