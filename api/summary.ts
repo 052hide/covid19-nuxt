@@ -2,7 +2,7 @@ import axios from 'axios'
 import { covid19ApiUri } from '~/consts'
 import { Summary } from '~/types/summary'
 
-export const GetSummary = async (): Promise<Summary | null> => {
+export const getSummary = async (): Promise<Summary | null> => {
   const res = await axios.get(`${covid19ApiUri}/summary`)
   let summary: Summary | null = null
   if (res && res.data) {
